@@ -21,4 +21,5 @@ int main()
 	cout << "Media nr intregi este: ";
 	cout<<medienrint(nrint, 4);
 
+
 }
