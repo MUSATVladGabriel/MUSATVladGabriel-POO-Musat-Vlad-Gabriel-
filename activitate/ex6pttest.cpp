@@ -1,6 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
-#include<string>
+#include<cstring>
 using namespace std;
 
 class Student
@@ -13,7 +13,7 @@ class Student
 	bool arebursa;
 	static int nrstudenti;
 public:
-	Student():id(++nrstudenti)
+	Student() :id(++nrstudenti)
 	{
 		this->nrmatricol = new char[strlen("X") + 1];
 		strcpy(this->nrmatricol, "X");
@@ -22,7 +22,8 @@ public:
 		this->note = nullptr;
 		this->arebursa = false;
 	}
-	Student(string nume):id(++nrstudenti)
+	//constructor cu un parametru
+	Student(string nume) :id(++nrstudenti)
 	{
 		this->nrmatricol = new char[strlen("X") + 1];
 		strcpy(this->nrmatricol, "X");
@@ -38,7 +39,8 @@ public:
 		this->note = nullptr;
 		this->arebursa = false;
 	}
-	Student(int nrnote, int* note):id(++nrstudenti) 
+	//constructor cu 2 parametri
+	Student(int nrnote, int* note) :id(++nrstudenti)
 	{
 		this->nrmatricol = new char[strlen("X") + 1];
 		strcpy(this->nrmatricol, "X");
@@ -47,10 +49,10 @@ public:
 		{
 			this->nrnote = nrnote;
 			this->note = new int[this->nrnote];
-				for (int i = 0; i < this->nrnote; i++)
-				{
-					this->note[i] = note[i];
-				}
+			for (int i = 0; i < this->nrnote; i++)
+			{
+				this->note[i] = note[i];
+			}
 		}
 		else
 		{
@@ -59,7 +61,7 @@ public:
 		}
 		this->arebursa = false;
 	}
-	Student(char* nrmatricol, string nume, int nrnote, int* note, bool arebursa) :id(++nrstudenti)
+	Student(const char* nrmatricol, string nume, int nrnote, int* note, bool arebursa) :id(++nrstudenti)
 	{
 		if (strlen(nrmatricol) >= 5)
 		{
@@ -79,7 +81,7 @@ public:
 		{
 			this->nume = "Necunoscut";
 		}
-		if (nrnote > 0&& note!=nullptr)
+		if (nrnote > 0 && note != nullptr)
 		{
 			this->nrnote = nrnote;
 			this->note = new int[this->nrnote];
@@ -95,11 +97,11 @@ public:
 		}
 		this->arebursa = arebursa;
 	}
-	char* nrmatricol()
+	char* getnrmatricol()
 	{
 		return this->nrmatricol;
 	}
-	int* getnote()
+	const int* getnote()const
 	{
 		return this->note;
 	}
@@ -107,6 +109,7 @@ public:
 	{
 		if (strlen(nrmatricol) >= 5)
 		{
+			delete[]this->nrmatricol;
 			this->nrmatricol = new char[strlen(nrmatricol) + 1];
 			strcpy(this->nrmatricol, nrmatricol);
 		}
@@ -124,25 +127,25 @@ public:
 			}
 		}
 	}
-	Student(const Student& s):id(++nrstudenti)
+	Student(const Student& s) :id(++nrstudenti)
 	{
-		
-			this->nrmatricol = new char[strlen(s.nrmatricol) + 1];
-			strcpy(this->nrmatricol,s.nrmatricol);
-	
-		
-			this->nume = s.nume;
-		
-		
-			if (s.nrnote > 0 && s.note!=nullptr)
+
+		this->nrmatricol = new char[strlen(s.nrmatricol) + 1];
+		strcpy(this->nrmatricol, s.nrmatricol);
+
+
+		this->nume = s.nume;
+
+
+		if (s.nrnote > 0 && s.note != nullptr)
+		{
+			this->nrnote = s.nrnote;
+			this->note = new int[this->nrnote];
+			for (int i = 0; i < this->nrnote; i++)
 			{
-				this->nrnote =s. nrnote;
-				this->note = new int[this->nrnote];
-				for (int i = 0; i < this->nrnote; i++)
-				{
-					this->note[i] =s. note[i];
-				}
+				this->note[i] = s.note[i];
 			}
+		}
 		else
 		{
 			this->nrnote = 0;
@@ -183,19 +186,19 @@ public:
 	{
 		int copienrnote = this->nrnote;
 		int* copienote = new int[copienrnote];
-			for (int i = 0; i < copienrnote; i++)
-			{
-				copienote[i] = this->note[i];
-			}
-			delete[]this->note;
-			this->nrnote++;
-			this->note = new int[this->nrnote];
-			for (int i = 0; i < copienrnote; i++)
-			{
-				this->note[i] = copienote[i];
-			}
-			this->note[this->nrnote - 1] = nota;	
-			delete[]copienote;
+		for (int i = 0; i < copienrnote; i++)
+		{
+			copienote[i] = this->note[i];
+		}
+		delete[]this->note;
+		this->nrnote++;
+		this->note = new int[this->nrnote];
+		for (int i = 0; i < copienrnote; i++)
+		{
+			this->note[i] = copienote[i];
+		}
+		this->note[this->nrnote - 1] = nota;
+		delete[]copienote;
 	}
 	void afisare()
 	{
@@ -209,6 +212,21 @@ public:
 		cout << endl;
 		cout << this->arebursa << endl;
 		cout << endl;
+		float s=0;
+		if (this->nrnote > 0 && this->note!=nullptr)
+		{
+			for (int i = 0; i < this->nrnote; i++)
+			{
+				s += this->note[i];
+			}
+			cout << s / this->nrnote;
+		}
+		else
+		{
+			cout<< 0 << endl;
+		}
+		cout << endl << endl << endl;
+
 	}
 	~Student()
 	{
@@ -226,10 +244,19 @@ int main()
 	s2.afisare();
 	cout << endl << endl;
 	int note1[] = { 6,7,10,9 };
-	Student s3(4,note1);
+	Student s3(4, note1);
 	s3.afisare();
 	s3.adauganota(9);
-
 	s3.afisare();
-
+	int note12[] = { 6,7,10,9,8,10 };
+	Student s4("B43MSE", "Lionel Messi", 6, note12, true);
+	s4.afisare();
+	s4.adauganota(10);
+	s4.afisare();
+	Student s5("BCN3421T", "Nico", 6, note12, true);
+	s5.afisare();
+	s5 = s4;
+	s5.afisare();
+	Student s6(s3);
+	s6.afisare();
 }
