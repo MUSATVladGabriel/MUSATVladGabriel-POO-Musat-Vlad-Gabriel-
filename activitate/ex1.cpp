@@ -1,466 +1,447 @@
 #include<iostream>
 #include<string>
-#include<cstring>
 using namespace std;
-enum tip { Poveste = 5, RPG = 10, Shooter = 15, Competitiv = 20 };
-class JocVideo
+enum tip{Chinezesc=5,Normal=10,Japonez=15,Spaniol=20};
+class Restaurant
 {
-	const int  id;
-	char* titlu;
-	int durataJoc;
-	float rating;
-	char* gen;
-	bool disponibilPeSteam;
-	tip Tip;
-	static int nrjocuri;
+	const int id;
+	char* nume;
+	char* oras;
+	float* ratinguri;
+	int nrrating;
+	tip categorie;
+	bool deschis;
+	static int nrrestaurante;
 public:
-	JocVideo() :id(++nrjocuri)
+	Restaurant():id(++nrrestaurante)
 	{
-		this->titlu = new char[strlen("Necunoscut") + 1];
-		strcpy(this->titlu, "Necunoscut");
-		this->durataJoc = 0;
-		this->rating = 0;
-		this->gen = new char[strlen("X") + 1];
-		strcpy(this->gen, "X");
-		this->disponibilPeSteam = false;
-		this->Tip = Competitiv;
+		this->nume = new char[strlen("Necunoscut") + 1];
+		strcpy(this->nume, "Necunoscut");
+		this->oras = new char[strlen("XYZAb") + 1];
+		strcpy(this->oras, "XYZAb");
+		this->ratinguri = nullptr;
+		this->nrrating = 0;
+		this->categorie = Normal;
+		this->deschis = false;
 	}
-	JocVideo(const char* titlu, int durataJoc, float rating, const char* gen, bool disponibilPeSteam, tip Tip) :id(++nrjocuri)
+	Restaurant(const char* nume,const char* oras,float* ratinguri,int nrrating,tip categorie,bool deschis) :id(++nrrestaurante)
 	{
-		if (strlen(titlu) >= 3)
+		if (strlen(nume) >= 3)
 		{
-			this->titlu = new char[strlen(titlu) + 1];
-			strcpy(this->titlu, titlu);
+			this->nume = new char[strlen(nume) + 1];
+			strcpy(this->nume, nume);
 		}
 		else
 		{
-			this->titlu = new char[strlen("Necunoscut") + 1];
-			strcpy(this->titlu, "Necunoscut");
-			throw exception("Nu este bun jocul!");
+			this->nume = new char[strlen("Necunoscut") + 1];
+			strcpy(this->nume, "Necunoscut");
+			throw exception("Bai nenicule nu exista acest restaurant");
 		}
-		if (durataJoc > 0)
+		if (strlen(oras) >= 4)
 		{
-			this->durataJoc = durataJoc;
+			this->oras = new char[strlen(oras) + 1];
+			strcpy(this->oras, oras);
 		}
 		else
 		{
-			this->durataJoc = 0;
-			throw exception("Nu exista!");
+			this->oras = new char[strlen("XYZAb") + 1];
+			strcpy(this->oras, "XYZAb");
+			throw exception("Acest oras nu exista");
 		}
-		if (rating > 0 && rating <= 10)
+		if (nrrating > 0 && ratinguri != nullptr)
 		{
-			this->rating = rating;
-		}
-		else if (rating <= 0)
-		{
-			this->rating = 0;
+			this->nrrating = nrrating;
+			this->ratinguri = new float[this->nrrating];
+			for (int i = 0; i < this->nrrating; i++)
+			{
+				this->ratinguri[i] = ratinguri[i];
+			}
 		}
 		else
 		{
-			this->rating = 10;
+			this->ratinguri = nullptr;
+			this->nrrating = 0;
+			throw exception("Nu are ratinguri!");
 		}
-		if (strlen(gen) >= 3)
-		{
-			this->gen = new char[strlen(gen) + 1];
-			strcpy(this->gen, gen);
-		}
-		else
-		{
-			this->gen = new char[strlen("X") + 1];
-			strcpy(this->gen, "X");
-			throw exception("MAMAAMMAA");
-		}
-		this->disponibilPeSteam = disponibilPeSteam;
-		this->Tip = Tip;
+		this->categorie = categorie;
+		this->deschis = deschis;
 	}
-	JocVideo(const JocVideo& j) :id(j.id)
+	Restaurant(const Restaurant& r):id(r.id)
 	{
-		if (strlen(j.titlu) >= 3)
+		if (strlen(r.nume) >= 3)
 		{
-			this->titlu = new char[strlen(j.titlu) + 1];
-			strcpy(this->titlu, j.titlu);
+			this->nume = new char[strlen(r.nume) + 1];
+			strcpy(this->nume,r.nume);
 		}
 		else
 		{
-			this->titlu = new char[strlen("Necunoscut") + 1];
-			strcpy(this->titlu, "Necunoscut");
-			//throw exception("Nu este bun jocul!");
+			this->nume = new char[strlen("Necunoscut") + 1];
+			strcpy(this->nume, "Necunoscut");
+			//throw exception("Bai nenicule nu exista acest restaurant");
 		}
-		if (j.durataJoc > 0)
+		if (strlen(r.oras) >= 4)
 		{
-			this->durataJoc = j.durataJoc;
+			this->oras = new char[strlen(r.oras) + 1];
+			strcpy(this->oras, r.oras);
 		}
 		else
 		{
-			this->durataJoc = 0;
-			//throw exception("Nu exista!");
+			this->oras = new char[strlen("XYZAb") + 1];
+			strcpy(this->oras, "XYZAb");
+			//throw exception("Acest oras nu exista");
 		}
-		if (j.rating > 0 && j.rating <= 10)
+		if (r.nrrating > 0 && r.ratinguri != nullptr)
 		{
-			this->rating = j.rating;
-		}
-		else if (j.rating <= 0)
-		{
-			this->rating = 0;
+			this->nrrating = r.nrrating;
+			this->ratinguri = new float[this->nrrating];
+			for (int i = 0; i < this->nrrating; i++)
+			{
+				this->ratinguri[i] = r.ratinguri[i];
+			}
 		}
 		else
 		{
-			this->rating = 10;
+			this->ratinguri = nullptr;
+			this->nrrating = 0;
+			//throw exception("Nu are ratinguri!");
 		}
-		if (strlen(j.gen) >= 3)
-		{
-			this->gen = new char[strlen(j.gen) + 1];
-			strcpy(this->gen, j.gen);
-		}
-		else
-		{
-			this->gen = new char[strlen("X") + 1];
-			strcpy(this->gen, "X");
-			//throw exception("MAMAAMMAA");
-		}
-		this->disponibilPeSteam = j.disponibilPeSteam;
-		this->Tip = j.Tip;
+		this->categorie = r.categorie;
+		this->deschis = r.deschis;
 	}
-	char* getgen()
+	Restaurant& operator=(const Restaurant& r)
 	{
-		char* copie = new char[strlen(this->gen) + 1];
-		strcpy(copie, this->gen);
+		if (this != &r)
+		{
+			if (strlen(r.nume) >= 3)
+			{
+				delete[]this->nume;
+				this->nume = new char[strlen(r.nume) + 1];
+				strcpy(this->nume, r.nume);
+			}
+			else
+			{
+				this->nume = new char[strlen("Necunoscut") + 1];
+				strcpy(this->nume, "Necunoscut");
+				//throw exception("Bai nenicule nu exista acest restaurant");
+			}
+			if (strlen(r.oras) >= 4)
+			{
+				delete[]this->oras;
+				this->oras = new char[strlen(r.oras) + 1];
+				strcpy(this->oras, r.oras);
+			}
+			else
+			{
+				this->oras = new char[strlen("XYZAb") + 1];
+				strcpy(this->oras, "XYZAb");
+				//throw exception("Acest oras nu exista");
+			}
+			if (r.nrrating > 0 && r.ratinguri != nullptr)
+			{
+				delete[]this->ratinguri;
+				this->nrrating = r.nrrating;
+				this->ratinguri = new float[this->nrrating];
+				for (int i = 0; i < this->nrrating; i++)
+				{
+					this->ratinguri[i] = r.ratinguri[i];
+				}
+			}
+			else
+			{
+				this->ratinguri = nullptr;
+				this->nrrating = 0;
+				//throw exception("Nu are ratinguri!");
+			}
+			this->categorie = r.categorie;
+			this->deschis = r.deschis;
+		}
+		return *this;
+	}
+	~Restaurant()
+	{
+		if (this->nume != nullptr && this->oras != nullptr && this->ratinguri != nullptr)
+		{
+			delete[]this->nume;
+			delete[]this->ratinguri;
+			delete[]this->oras;
+		}
+	}
+	float* getratinguri()
+	{
+		float* copie = new float[this->nrrating];
+		for (int i = 0; i < this->nrrating; i++)
+		{
+			copie[i] = this->ratinguri[i];
+		}
 		return copie;
 	}
-	bool getdisponibilpesteam()
+	char* getnume()
 	{
-		return this->disponibilPeSteam;
+		char* copie = new char[strlen(this->nume) + 1];
+		strcpy(copie, this->nume);
+		return copie;
 	}
 	const int getid()
 	{
 		return this->id;
 	}
-	string getTiptxt()
+	void setratinguri(int nrrating, float* ratinguri)
 	{
-		if (this->Tip == Poveste)
+		if (nrrating > 0 && ratinguri != nullptr)
 		{
-			return "Poveste";
-		}
-		else if (this->Tip == RPG)
-		{
-			return "RPG";
-		}
-		else if (this->Tip == Shooter)
-		{
-			return "Shooter";
+			delete[]this->ratinguri;
+			this->nrrating = nrrating;
+			this->ratinguri = new float[this->nrrating];
+			for (int i = 0; i < this->nrrating; i++)
+			{
+				this->ratinguri[i] = ratinguri[i];
+			}
 		}
 		else
 		{
-			return "Competitiv";
+			throw new exception("Baaaaaaaa unde ne duci?!");
 		}
 	}
-	void setgen(const char* gen)
+	void setdeschis(bool deschis)
 	{
-		if (strlen(gen) >= 3)
-		{
-			delete[]this->gen;
-			this->gen = new char[strlen(gen) + 1];
-			strcpy(this->gen, gen);
-		}
-		else
-		{
-			throw exception("Nu exista jocul fmmm!");
-		}
+		this->deschis = deschis;
 	}
-	void setTip(tip Tip)
+	friend ostream& operator<<(ostream& out, const Restaurant& r)
 	{
-		this->Tip = Tip;
-	}
-	void setdisponibilPesteam(bool dispnibilpesteam)
-	{
-		this->disponibilPeSteam = dispnibilpesteam;
-	}
-	~JocVideo()
-	{
-		if (this->titlu != nullptr && this->gen != nullptr)
+		out << "Idul: " << r.id << endl;
+		out << "Numele: " << r.nume<<endl;
+		out << "Orasul: " << r.oras << endl;
+		out << "Nr de ratinguri: " << r.nrrating << endl;
+		out << "Ratingurile sunt: ";
+		for (int i = 0; i < r.nrrating; i++)
 		{
-			delete[]this->titlu;
-			delete[]this->gen;
+			out << r.ratinguri[i] << ",";
 		}
-	}
-	friend ostream& operator<<(ostream& out, JocVideo j)
-	{
-		out << "Id ul: " << j.id << endl;
-		out << "Titlul: " << j.titlu << endl;
-		out << "Durata jocului: " << j.durataJoc << endl;
-		out << "Ratingul: " << j.rating << endl;
-		out << "Genul: " << j.gen << endl;
-		out << "Disponibil pe steam(1-da 0-NU): " << j.disponibilPeSteam << endl;
-		out << "Tipul jocului: ";
-		if (j.Tip == Poveste)
+		out << endl;
+		out << "Categoria: ";
+		if (r.categorie == Chinezesc)
 		{
-			out << "Poveste";
+			out << "Chinezesc";
 		}
-		else if (j.Tip == RPG)
+		else if (r.categorie == Spaniol)
 		{
-			out << "RPG";
+			out << "Spaniol";
 		}
-		else if (j.Tip == Shooter)
+		else if (r.categorie == Japonez)
 		{
-			out << "Shooter";
+			out << "Japonez";
 		}
-		else
+		else if (r.categorie == Normal)
 		{
-			out << "Competitiv";
+			out << "Normal";
 		}
+		out << endl;
+		out << "Deschis(Da-1 si Nu-0): " << r.deschis<<endl;
 		return out;
 	}
-	JocVideo& operator=(const JocVideo& j)
+	friend istream& operator>>(istream& in, Restaurant& r)
 	{
-		if (this != &j)
-		{
-			if (strlen(j.titlu) >= 3)
-			{
-				this->titlu = new char[strlen(j.titlu) + 1];
-				strcpy(this->titlu, j.titlu);
-			}
-			else
-			{
-				this->titlu = new char[strlen("Necunoscut") + 1];
-				strcpy(this->titlu, "Necunoscut");
-				//throw exception("Nu este bun jocul!");
-			}
-			if (j.durataJoc > 0)
-			{
-				this->durataJoc = j.durataJoc;
-			}
-			else
-			{
-				this->durataJoc = 0;
-				//throw exception("Nu exista!");
-			}
-			if (j.rating > 0 && j.rating <= 10)
-			{
-				this->rating = j.rating;
-			}
-			else if (j.rating <= 0)
-			{
-				this->rating = 0;
-			}
-			else
-			{
-				this->rating = 10;
-			}
-			if (strlen(j.gen) >= 3)
-			{
-				this->gen = new char[strlen(j.gen) + 1];
-				strcpy(this->gen, j.gen);
-			}
-			else
-			{
-				this->gen = new char[strlen("X") + 1];
-				strcpy(this->gen, "X");
-				//throw exception("MAMAAMMAA");
-			}
-			this->disponibilPeSteam = j.disponibilPeSteam;
-			this->Tip = j.Tip;
-		}
-		return *this;
-	}
-	explicit operator float()
-	{
-		return this->rating;
-	}
-	explicit operator int()
-	{
-		return this->durataJoc;
-	}
-	JocVideo operator+(int valoare)
-	{
-		JocVideo copie = *this;
-		copie.durataJoc = copie.durataJoc + valoare;
-		return copie;
-	}
-	JocVideo& operator++()
-	{
-		this->rating++;
-		return *this;
-	}
-	JocVideo operator++(int)
-	{
-		JocVideo copie = *this;
-		this->durataJoc++;
-		return copie;
-	}
-	char operator[](int index)
-	{
-		if (index >= 0 && index < strlen(this->titlu))
-		{
-			return this->titlu[index];
-		}
-		else
-		{
-			throw exception("Pune alt index bai nenicule!");
-		}
-	}
-	char& operator()(char aux, int index)
-	{
-		if (index >= 0 && index < strlen(gen))
-		{
-			this->gen[index] = aux;
-		}
-		return this->gen[index];
-	}
-	JocVideo& operator += (const JocVideo& j)
-	{
-		this->durataJoc += j.durataJoc;
-		return *this;
-	}
-	bool operator!()
-	{
-		if (!this->rating)
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}
-	}
-	bool operator==(JocVideo j)
-	{
-		bool diferit = false;
-		if (strcmp(this->titlu, j.titlu) != 0 || strcmp(this->gen, j.gen) != 0 ||
-			this->rating != j.rating || this->durataJoc != j.durataJoc ||
-			this->disponibilPeSteam != j.disponibilPeSteam || this->Tip != j.Tip)
-			diferit = true;
-		
-		if (diferit == true)
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}
-	}
-	bool operator>(JocVideo j)
-	{
-		return this->rating > j.rating;
-	}
-	friend istream& operator>>(istream& in, JocVideo& j)
-	{
-		delete[]j.titlu;
-		cout << "Introduceti titlul: ";
+		delete[]r.nume;
+		cout << "Introduceti numele: ";
 		char aux[100];
 		in >> ws;
 		in.getline(aux, 99);
-		j.titlu = new char[strlen(aux) + 1];
-		strcpy(j.titlu, aux);
-		cout << "Introduceti durata: ";
-		in >> j.durataJoc;
-		cout << "Introduceti ratingul: ";
-		in >> j.rating;
-		delete[]j.gen;
-		cout << "Introduceti genul: ";
+		r.nume = new char[strlen(aux) + 1];
+		strcpy(r.nume, aux);
+		delete[]r.oras;
+		cout << "Introduceti orasul: ";
 		char aux1[100];
 		in >> ws;
 		in.getline(aux1, 99);
-		j.gen= new char[strlen(aux) + 1];
-		strcpy(j.gen, aux);
-		cout << "Introduceti daca este disponibil pe steam(1-Da si 0-NU): ";
-		in >> j.disponibilPeSteam;
-		cout << "Introduceti tipul(5 10 15 20): ";
+		r.oras = new char[strlen(aux1) + 1];
+		strcpy(r.oras, aux1);
+		cout << "Introduceti nr de ratinguri: ";
+		in >> r.nrrating;
+		delete[]r.ratinguri;
+		r.ratinguri = new float[r.nrrating];
+		for (int i = 0; i < r.nrrating; i++)
+		{
+			cout << "Introduceti ratingul " << i + 1 << ":";
+			in >> r.ratinguri[i];
+		}
 		int tip;
+		cout << "Introduceti tipul(5-chinezesc 10-Spaniol 15-Japonez 20-Normal): ";
 		in >> tip;
 		if (tip == 5)
-			j.Tip = Poveste;
+		{
+			r.categorie = Chinezesc;
+		}
 		else if (tip == 10)
-			j.Tip == RPG;
+		{
+			r.categorie = Spaniol;
+		}
 		else if (tip == 15)
 		{
-			j.Tip = Shooter;
+			r.categorie = Japonez;
 		}
 		else
-			j.Tip = Competitiv;
+		{
+			r.categorie = Normal;
+		}
+		cout << "Introduceti daca este deschis(Da-1 si Nu-0): ";
+		in >> r.deschis;
 		return in;
 	}
-
+	Restaurant operator+(const Restaurant &r)
+	{
+		Restaurant copie = *this;
+		copie.nrrating += r.nrrating;
+		return copie;
+	}
+	float ratingmediu()
+	{
+		float s = 0;
+		for (int i = 0; i < this->nrrating; i++)
+		{
+			s += this->ratinguri[i];
+		}
+		return s / this->nrrating;
+	}
+	explicit operator int()
+	{
+		 return this->ratingmediu();
+	}
+	explicit operator char*()
+	{
+		return this->nume;
+	}
+	float& operator[](int index)
+	{
+		if (index >= 0 && index < this->nrrating)
+		{
+			return this->ratinguri[index];
+		}
+		else
+		{
+			throw exception("Nu ai ales indexul potrivit!");
+		}
+	}
+	Restaurant& operator++()
+	{
+		for (int i = 0; i < this->nrrating; i++)
+		{
+			this->ratinguri[i]++;
+		}
+		return *this;
+	}
+	Restaurant operator++(int)
+	{
+		Restaurant copie = *this;
+		for (int i = 0; i < this->nrrating; i++)
+		{
+			this->ratinguri[i]++;
+		}
+		return copie;
+	}
+	bool operator!=(Restaurant r)
+	{
+		bool acelasi = false;
+		if (strcmp(this->nume, r.nume) == 0 && strcmp(this->oras, r.oras) == 0 &&
+			this->nrrating == r.nrrating && this->categorie == r.categorie && this->deschis == r.deschis)
+		{
+			acelasi = true;
+		}
+		else
+		{
+			for (int i = 0; i < this->nrrating; i++)
+			{
+				if (this->ratinguri[i] == r.ratinguri[i])
+				{
+					acelasi = true;
+				}
+			}
+		}
+		if (acelasi == false)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	float operator()()
+	{
+		return this->ratingmediu();
+	}
+	bool operator!()
+	{
+		return this->nrrating != 0;
+	}
+	
 };
-int JocVideo::nrjocuri = 0;
+int Restaurant::nrrestaurante = 0;
 int main()
 {
-	JocVideo j;
-	JocVideo j1("Counter Strike 2", 50, 6.5, "Peste 12 ani", 1, Shooter);
-	cout << j << endl << endl;
-	cout << j1 << endl << endl;
-	JocVideo j2(j);
-	JocVideo j3;
-	j3 = j1;
-	cout << j2 << endl << endl;
-	cout << j3 << endl << endl;
+	Restaurant r;
+	float ratinguri1[] = { 7.5,8.9,9.5,7.9 };
+	Restaurant r1("Al Pacino", "Bucuresti", ratinguri1, 4, Spaniol, true);
+	Restaurant r2(r);
+	Restaurant r3;
+	r3 = r1;
+	cout << r << endl<<endl;
+	cout << r1 << endl << endl;
+	cout << r3 << endl << endl;
 	try
 	{
-		JocVideo j4("Oert", 25, 7.2, "ureche", 0, Competitiv);
-		JocVideo j5;
-		j5.setgen("Ant2");
-		cout << j1[-5] << endl;
+		cout << r1[-5] << endl;
+		Restaurant r5;
+		r5.setratinguri(-5, NULL);
+		Restaurant r4("e", "O", ratinguri1, 4, Normal, 0);
 	}
 	catch (exception err)
 	{
 		cout << err.what() << endl << endl;
 	}
-	cout << (int)j3 << endl;
-	cout << (float)j2 << endl;
-	cout << j1 << endl << endl;
-	JocVideo j4 = j1 + 25;
-	cout << j4 << endl << endl;
-	cout << j4 << endl;
-	JocVideo j5 = ++j4;
-	cout << j4 << endl << endl;
-	cout << j5 << endl << endl;
-	cout << j1 << endl<<endl;
-	JocVideo j6 = j1++;
-	cout << j1 << endl << endl;
-	cout << j6 << endl << endl;
-	cout << j1[2] << endl;
-	cout << j3('u', 1) << endl << endl;
-	JocVideo j7("Clash Royale",4,6.2,"Pe telefon",0,RPG);
-		j7+= j6;
-		cout << j6 << endl << endl;
-		cout << j7 << endl << endl;
-		if (!j)
-		{
-			cout << "Este egal cu 0";
-		}
-		else
-		{
-			cout << "Este diferit de 0";
-		}
-		cout << endl << endl;
-		if (j1 == j1)
-		{
-			cout << "Obiectele sunt identice.";
-		}
-		else
-		{
-			cout << "Obiectele nu sunt identice.";
-		}
-		cout << endl;
-		if (j6 == j1)
-		{
-			cout << "Obiectele sunt identice.";
-		}
-		else
-		{
-			cout << "Obiectele nu sunt identice.";
-		}
-		cout << endl;
-		if (j1 > j7)
-		{
-			cout << "Ratingul jocului 1 e mai mare!";
-		}
-		else
-		{
-			cout << "Ratingul jocului 1 e mai mic!";
-		}
-		cout << endl << endl;
-		JocVideo j8;
-		cin >> j8;
-		cout << j8 << endl << endl;
+	catch (exception* er)
+	{
+		cout << er->what() << endl << endl;
+	}
+	Restaurant r4=r1+r;
+	//cin >> r4;
+	//cout << r4;
+	cout << r4 << endl << endl;
+	cout << r1.ratingmediu() << endl;
+	cout << (int)r1 << endl;
+	cout << (char*)r << endl;
+	cout << r1[2] << endl;
+	cout << r1 << endl << endl;
+	Restaurant r5 = r1++;
+	cout << r5 << endl << endl;
+	cout << r1 << endl << endl;
+	Restaurant r6 = ++r1;
+	cout << r6 << endl << endl;
+	cout << r1 << endl << endl;
+	if (r1 != r1)
+	{
+		cout << "Obiectele sunt diferite";
+	}
+	else
+	{
+		cout << "Obiectele sunt aceleasi";
+	}
+	cout << endl;
+	if (r2 != r1)
+	{
+		cout << "Obiectele sunt diferite";
+	}
+	else
+	{
+		cout << "Obiectele sunt aceleasi";
+	}
+	cout << endl << r6() << endl;
+	if (!r5)
+	{
+		cout << "Rating!=0";
+	}
+	else
+	{
+		cout << "Rating=0";
+	}
+	return 0;
 }
